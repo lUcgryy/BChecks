@@ -1,0 +1,24 @@
+metadata:
+    language: v2-beta
+    name: "Check Email in Burp Collab"
+    description: "Replace all email regex to burp's collab email and check whether we receive any interaction"
+    author: "lUcgryy"
+    tags: "active", "email"
+
+define:
+    collaborator_address = `bcheck@{generate_collaborator_address()}`
+
+
+given body insertion point then
+    if {insertion_point_base_value} matches "[a-zA-Z0-9_!#$%&'*+/=?``{|}~^.-]+@[a-zA-Z0-9.-]+" then
+	    send payload:
+	        replacing: {collaborator_address}
+
+	    if smtp interactions then
+	        report issue:
+	            severity: info
+	            confidence: certain
+	            detail: `The target application can send email to Burp Collab Address`
+	            remediation: "Check for several CVE: CVE-2016-10033, and other email issue"
+	    end if
+    end if

@@ -1,0 +1,16 @@
+metadata:
+    language: v2-beta
+    name: "Email detected in Request (passive)"
+    description: "The applicaiton is using email in request"
+    author: "lUcgryy"
+    tags: "passive"
+
+given request then
+    if {base.request} matches "[a-zA-Z0-9_!#$%&'*+/=?``{|}~^.-]+@[a-zA-Z0-9.-]+" then
+    
+        report issue:
+            severity: info
+            confidence: firm
+            detail: "The server may processing email"
+            remediation: "Check for several CVE: CVE-2016-10033, and other email issue"
+    end if
